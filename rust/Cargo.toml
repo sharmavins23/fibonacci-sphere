@@ -1,0 +1,16 @@
+[dependencies]
+godot = "0.4.5"
+
+[package]
+edition = "2024"
+name = "rust"
+version = "0.1.0"
+
+[lib]
+crate-type = ["cdylib"] # Compile this crate to a C-compatible dynamic library
+
+[lints.clippy]
+enum_glob_use = "deny"
+nursery = "deny"
+pedantic = "deny"
+unwrap_used = "deny"
