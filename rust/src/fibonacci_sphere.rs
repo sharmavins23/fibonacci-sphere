@@ -115,8 +115,6 @@ impl FibonacciSphere {
 
             // Add the point to the array
             self.points.push(Vector3::new(x, y, z));
-
-            godot_print!("Generated point {}: ({}, {}, {})", i, x, y, z);
         }
 
         // Render all points on screen!

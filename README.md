@@ -18,17 +18,17 @@ Every rendition I've seen of Fibonacci Lattices were accompanied with gorgeous
 video-related visuals, and so, I had to make one. As such, the scope for this
 project is simple:
 
-- Create a renderer for a 3-dimensional (spherical) Fibonacci lattice;
-- When new points are added, interpolate their positions to give the effect of
-  points 'appearing' or 'bouncing' into view;
-- Use the arrow keys to increase or decrease the number of points (to a clamped
-  minimum/maximum!)
+- [x] Create a renderer for a 3-dimensional (spherical) Fibonacci lattice;
+- [ ] When new points are added, interpolate their positions to give the effect
+      of points 'appearing' or 'bouncing' into view;
+- [ ] Use the arrow keys to increase or decrease the number of points (to a
+      clamped minimum/maximum!)
 
 Brownie points for:
 
-- The sphere being visually engaging.
-- The sphere (and its points) rotating in space, with this rotation speed being
-  controllable up to a point (and also clamped).
+- [ ] The sphere being visually engaging.
+- [ ] The sphere (and its points) rotating in space, with this rotation speed
+      being controllable up to a point (and also clamped).
 
 ## Development
 
