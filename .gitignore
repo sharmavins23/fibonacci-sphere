@@ -1,0 +1,9 @@
+# Editor
+.vscode
+
+# Godot
+godot/fibonacci-sphere/.godot
+godot/fibonacci-sphere/android
+
+# Rust
+rust/target
