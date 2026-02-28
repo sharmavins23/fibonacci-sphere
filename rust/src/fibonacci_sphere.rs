@@ -19,9 +19,6 @@ pub struct FibonacciSphere {
 
     /// The points of the [`FibonacciSphere`].
     pub points: Array<Vector3>,
-
-    /// Re-usable [`SphereMesh`] for the fixed points.
-    pub sphere_mesh: Gd<SphereMesh>,
 }
 
 // ===== Implementations =======================================================
@@ -36,20 +33,9 @@ impl INode3D for FibonacciSphere {
     fn init(base: Base<Node3D>) -> Self {
         godot_print!("FibonacciSphere creating!");
 
-        // Created the material for the fixed points
-        let mut material = StandardMaterial3D::new_gd();
-        material.set_albedo(Color::from_rgb(1.0, 0.0, 0.0));
-
-        // Create the fixed point
-        let mut sphere_mesh: Gd<SphereMesh> = SphereMesh::new_gd();
-        sphere_mesh.set_radius(POINT_SIZE);
-        sphere_mesh.set_height(POINT_SIZE);
-        sphere_mesh.set_material(Some(&material));
-
         Self {
             base,
             points: Array::new(),
-            sphere_mesh,
         }
     }
 
@@ -129,10 +115,27 @@ impl FibonacciSphere {
         let points: Array<Vector3> = self.points.duplicate_shallow();
 
         for point in points.iter_shared() {
+            // Map the point's x, y, z coordinates to r, g, b
+            let (r, g, b) = (
+                (point.x + 1.0) / 2.0, // Map x from [-1, 1] to [0, 1]
+                (point.y + 1.0) / 2.0, // Map y from [-1, 1] to [0, 1]
+                (point.z + 1.0) / 2.0, // Map z from [-1, 1] to [0, 1]
+            );
+
+            // Create a new material for each point
+            let mut material = StandardMaterial3D::new_gd();
+            material.set_albedo(Color::from_rgb(r, g, b));
+
+            // Create a new SphereMesh for each point
+            let mut sphere_mesh: Gd<SphereMesh> = SphereMesh::new_gd();
+            sphere_mesh.set_radius(POINT_SIZE);
+            sphere_mesh.set_height(POINT_SIZE);
+            sphere_mesh.set_material(Some(&material));
+
             // Create a new MeshInstance3D for each point
             // ! These have to be manually freed via free() after usage
             let mut mesh_instance_3d: Gd<MeshInstance3D> = MeshInstance3D::new_alloc();
-            mesh_instance_3d.set_mesh(Some(&self.sphere_mesh));
+            mesh_instance_3d.set_mesh(Some(&sphere_mesh));
 
             // Set the position of the sphere
             let transform: Transform3D = Transform3D::new(

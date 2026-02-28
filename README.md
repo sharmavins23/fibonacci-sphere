@@ -17,7 +17,7 @@ a unit square, disk, or sphere".
 The following are current (and planned) features for this project:
 
 - [x] The project renders a Fibonacci lattice.
-- [ ] Points are colored based on their positioning.
+- [x] Points are colored based on their positioning.
 - [ ] Input controls (`Q` and `E` keys) support increasing or decreasing the
       number of points in real-time, clamped to maxima and minima.
 - [ ] Input controls (`W`, `A`, `S`, and `D`) support smoothly (based on
