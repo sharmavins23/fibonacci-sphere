@@ -2,8 +2,8 @@
 .vscode
 
 # Godot
-godot/fibonacci-sphere/.godot
-godot/fibonacci-sphere/android
+godot/.godot
+godot/android
 
 # Rust
 rust/target

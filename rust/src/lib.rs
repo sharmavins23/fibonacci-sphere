@@ -1,5 +1,7 @@
 use godot::prelude::{ExtensionLibrary, gdextension};
 
+mod fibonacci_sphere;
+
 // ===== Definitions ===========================================================
 
 /// Definition of the [`ExtensionLibrary`] loading our scripts into Godot.

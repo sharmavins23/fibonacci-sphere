@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://c2xn6oh4ymxyo"]
+
+[node name="FibonacciSphere" type="FibonacciSphere" unique_id=650154444]
