@@ -10,7 +10,14 @@ a sphere, Sebastian discusses about (and shows a rendered example of) a
 which is "a visually and mathematically elegant method of distributing points on
 a unit square, disk, or sphere".
 
-![Current Progress](img/sphere01.png)
+## Progress
+
+| Image                    | Description                                                                                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ![img](img/sphere01.png) | The first implementation was a simple sphere.                                                                                                                                  |
+| ![gif](img/sphere02.gif) | After some hacking, I was able to get camera controls and controllable points. However, I quickly noticed that computation for spherical points was extremely slow on the CPU. |
+
+![Current Progress](img/sphere02.png)
 
 ## Features
 
