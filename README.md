@@ -31,9 +31,9 @@ The following are current (and planned) features for this project:
       controls (`Q` and `E`) support moving closer or farther from the sphere.
 - [x] Points are illuminated through a series of spotlights placed around the
       sphere.
-- [ ] Input controls (`Z` and `X`) support increasing and decreasing the number
+- [x] Input controls (`Z` and `X`) support increasing and decreasing the number
       of points in real-time, clamped to maxima and minima.
-- [ ] When new points are added, their positions are interpolated to give the
+- [x] When new points are added, their positions are interpolated to give the
       effect of points 'appearing' or 'bouncing' into view.
 
 ## Development
