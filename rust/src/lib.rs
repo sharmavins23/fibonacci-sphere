@@ -1,6 +1,8 @@
 use godot::prelude::{ExtensionLibrary, gdextension};
 
 mod fibonacci_sphere;
+mod keyboard_input_handler;
+mod orbital_camera;
 
 // ===== Definitions ===========================================================
 

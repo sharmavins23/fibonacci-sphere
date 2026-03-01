@@ -18,13 +18,12 @@ The following are current (and planned) features for this project:
 
 - [x] The project renders a Fibonacci lattice.
 - [x] Points are colored based on their positioning.
-- [ ] Input controls (`Q` and `E` keys) support increasing or decreasing the
-      number of points in real-time, clamped to maxima and minima.
-- [ ] Input controls (`W`, `A`, `S`, and `D`) support smoothly (based on
+- [x] Input controls (`W`, `A`, `S`, and `D`) support smoothly (based on
       physics) orbiting the camera around the sphere. This is computed via
-      simple physics, supporting clamped increases to rotational velocity.
-- [ ] Input control (`Space`) supports locking the camera's position, removing
-      current velocity.
+      simple physics, supporting clamped increases to rotational velocity. Input
+      controls (`Q` and `E`) support moving closer or farther from the sphere.
+- [ ] Input controls (`Z` and `X`) support increasing and decreasing the number
+      of points in real-time, clamped to maxima and minima.
 - [ ] When new points are added, their positions are interpolated to give the
       effect of points 'appearing' or 'bouncing' into view.
 

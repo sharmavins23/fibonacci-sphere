@@ -31,7 +31,7 @@ impl INode3D for FibonacciSphere {
     /// # Parameters:
     /// - `base`: The base [`Node3D`] of our class that the [`FibonacciSphere`] is built upon.
     fn init(base: Base<Node3D>) -> Self {
-        godot_print!("FibonacciSphere creating!");
+        godot_print!("FibonacciSphere created!");
 
         Self {
             base,
@@ -46,7 +46,7 @@ impl INode3D for FibonacciSphere {
     fn ready(&mut self) {
         godot_print!("FibonacciSphere is ready in the scene!");
 
-        self.generate_points(1000);
+        self.generate_points(5000);
     }
 }
 
