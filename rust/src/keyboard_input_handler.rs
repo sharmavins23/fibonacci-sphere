@@ -61,4 +61,18 @@ impl KeyboardInputHandler {
             Vector3::ZERO
         }
     }
+
+    /// Polls the Z and X keys for point modification input, and returns an
+    /// integer representing the modification direction.
+    ///
+    /// - Returns `-1` if Z is pressed (decrease point count).
+    /// - Returns `1` if X is pressed (increase point count).
+    /// - Returns `0` if neither or both are pressed (no change).
+    pub fn poll_zx_point_modification() -> i32 {
+        match (Self::is_key_pressed(Key::Z), Self::is_key_pressed(Key::X)) {
+            (true, false) => -1, // Z is pressed, decrease point count
+            (false, true) => 1,  // X is pressed, increase point count
+            _ => 0,              // No change if both or neither are pressed
+        }
+    }
 }

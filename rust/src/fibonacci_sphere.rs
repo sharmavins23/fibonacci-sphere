@@ -5,6 +5,13 @@ use godot::{
 };
 use std::f32::consts;
 
+use crate::keyboard_input_handler::KeyboardInputHandler;
+
+// Minimum number of points.
+const MIN_POINTS: i32 = 2;
+// Maximum number of points.
+const MAX_POINTS: i32 = 5000;
+// Size of each individual rendered point.
 const POINT_SIZE: f32 = 0.02;
 
 // ===== Definitions ===========================================================
@@ -46,7 +53,25 @@ impl INode3D for FibonacciSphere {
     fn ready(&mut self) {
         godot_print!("FibonacciSphere is ready in the scene!");
 
-        self.generate_points(5000);
+        self.generate_points(MIN_POINTS);
+    }
+
+    /// Called every physics frame to update the state of the [`FibonacciSphere`].
+    ///
+    /// # Parameters:
+    /// - `self`: The instance of the [`FibonacciSphere`] class.
+    /// - `_delta`: The time elapsed since the last physics frame.
+    fn physics_process(&mut self, _delta: f32) {
+        // Poll the ZX keys for point increment/decrement
+        let point_delta: i32 = KeyboardInputHandler::poll_zx_point_modification();
+        if point_delta != 0 {
+            let current_point_count: i32 = self.points.len() as i32;
+            let num_points: i32 = (current_point_count + point_delta)
+                // Clamp to reasonable values to prevent overflow or freezing
+                .max(MIN_POINTS)
+                .min(MAX_POINTS);
+            self.generate_points(num_points);
+        }
     }
 }
 
