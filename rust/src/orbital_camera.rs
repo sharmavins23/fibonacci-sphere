@@ -66,9 +66,6 @@ impl ICamera3D for OrbitalCamera {
         // Poll the WASDQE keys for movement input
         let movement_input: Vector3 = KeyboardInputHandler::poll_wasdqe_movement();
 
-        godot_print!("Movement Input: {:?}", movement_input);
-        godot_print!("Angular Velocity: {:?}", self.angular_velocity);
-
         if movement_input == Vector3::ZERO {
             // If there's no movement, apply damping
             self.angular_velocity *= MOVEMENT_DECAY;
@@ -96,12 +93,6 @@ impl ICamera3D for OrbitalCamera {
         // Set the camera's position to the new Cartesian coordinates
         self.base_mut().set_position(cartesian_coordinates);
         self.base_mut().look_at(Vector3::ZERO);
-
-        godot_print!(
-            "Updated Spherical Coordinates: {:?}",
-            self.spherical_coordinates
-        );
-        godot_print!("Updated Cartesian Coordinates: {:?}", cartesian_coordinates);
     }
 }
 
