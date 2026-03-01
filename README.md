@@ -12,12 +12,12 @@ a unit square, disk, or sphere".
 
 ## Progress
 
-| Image                    | Description                                                                                                                                                                    |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| ![img](img/sphere01.png) | The first implementation was a simple sphere.                                                                                                                                  |
-| ![gif](img/sphere02.gif) | After some hacking, I was able to get camera controls and controllable points. However, I quickly noticed that computation for spherical points was extremely slow on the CPU. |
-
-![Current Progress](img/sphere02.png)
+| Image                    | Description                                                                                                                                                                                                    |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ![img](img/sphere01.png) | The first implementation was a simple sphere.                                                                                                                                                                  |
+| ![gif](img/sphere02.gif) | After some hacking, I was able to get camera controls and controllable points. However, I quickly noticed that computation for spherical points was extremely slow on the CPU.                                 |
+| ![gif](img/sphere03.gif) | My original code was generating new mesh instances for every individual point. By using a `MultiMesh3D` object, I could instance the individual nodes within one object, significantly increasing performance. |
+| ![gif](img/sphere04.gif) | Movement and rotational functions work extremely well.                                                                                                                                                         |
 
 ## Features
 
