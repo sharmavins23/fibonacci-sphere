@@ -1,9 +1,12 @@
 use godot::{
-    classes::{INode3D, MeshInstance3D, Node, Node3D, SphereMesh, StandardMaterial3D},
+    classes::{
+        INode3D, MultiMesh, MultiMeshInstance3D, Node, Node3D, Shader, ShaderMaterial, SphereMesh,
+        multi_mesh::TransformFormat,
+    },
     obj::{Gd, NewAlloc, NewGd, WithBaseField},
     prelude::{Array, Base, Color, GodotClass, Transform3D, Vector3, godot_api, godot_print},
 };
-use std::f32::consts;
+use std::{f32::consts, fs};
 
 use crate::keyboard_input_handler::KeyboardInputHandler;
 
@@ -101,7 +104,7 @@ impl FibonacciSphere {
         self.points.clear();
         self.clear_rendered_points();
 
-        // Pre-compute the golden ratio
+        // Pre-compute the golden ratio constant
         // Note: std::f32::consts::PHI is not yet available in stable Rust
         let phi: f32 = (1.0 + 5.0_f32.sqrt()) / 2.0; // The golden ratio
 
@@ -137,42 +140,59 @@ impl FibonacciSphere {
     /// # Parameters:
     /// - `self`: The instance of the [`FibonacciSphere`] class.
     fn render_points(&mut self) {
-        let points: Array<Vector3> = self.points.duplicate_shallow();
+        // Create a multi mesh instance to efficiently render all points
+        let mut multi_mesh_instance: Gd<MultiMeshInstance3D> = MultiMeshInstance3D::new_alloc();
+        // Create a multi mesh to hold the geometry of the points
+        let mut multi_mesh: Gd<MultiMesh> = MultiMesh::new_gd();
+        multi_mesh.set_transform_format(TransformFormat::TRANSFORM_3D);
+        multi_mesh.set_use_colors(true);
+        multi_mesh.set_instance_count(self.points.len() as i32);
 
-        for point in points.iter_shared() {
-            // Map the point's x, y, z coordinates to r, g, b
-            let (r, g, b) = (
-                (point.x + 1.0) / 2.0, // Map x from [-1, 1] to [0, 1]
-                (point.y + 1.0) / 2.0, // Map y from [-1, 1] to [0, 1]
-                (point.z + 1.0) / 2.0, // Map z from [-1, 1] to [0, 1]
-            );
+        // Create a SphereMesh for each point
+        let mut sphere_mesh: Gd<SphereMesh> = SphereMesh::new_gd();
+        sphere_mesh.set_radius(POINT_SIZE);
+        sphere_mesh.set_height(POINT_SIZE);
+        // Set the multi mesh to use the sphere mesh for rendering
+        multi_mesh.set_mesh(Some(&sphere_mesh));
 
-            // Create a new material for each point
-            let mut material = StandardMaterial3D::new_gd();
-            material.set_albedo(Color::from_rgb(r, g, b));
+        // Create a simple shader material for the spheres
+        let mut shader_material: Gd<ShaderMaterial> = ShaderMaterial::new_gd();
+        let shader_path: &str = "shaders/fibonacci_sphere_color.gdshader";
+        let shader_code: String = match fs::read_to_string(shader_path) {
+            Ok(code) => code,
+            Err(err) => {
+                godot_print!("Failed to read shader file '{}': {}", shader_path, err);
+                return;
+            }
+        };
+        let mut shader: Gd<Shader> = Shader::new_gd();
+        shader.set_code(&shader_code);
+        shader_material.set_shader(Some(&shader));
+        sphere_mesh.set_material(Some(&shader_material));
 
-            // Create a new SphereMesh for each point
-            let mut sphere_mesh: Gd<SphereMesh> = SphereMesh::new_gd();
-            sphere_mesh.set_radius(POINT_SIZE);
-            sphere_mesh.set_height(POINT_SIZE);
-            sphere_mesh.set_material(Some(&material));
-
-            // Create a new MeshInstance3D for each point
-            // ! These have to be manually freed via free() after usage
-            let mut mesh_instance_3d: Gd<MeshInstance3D> = MeshInstance3D::new_alloc();
-            mesh_instance_3d.set_mesh(Some(&sphere_mesh));
-
-            // Set the position of the sphere
+        // Set properties for each instance iteratively
+        for (i, point) in self.points.iter_shared().enumerate() {
             let transform: Transform3D = Transform3D::new(
                 // Use the identity basis (no rotation)
                 Transform3D::IDENTITY.basis,
                 // Set the origin to the point's position
                 point,
             );
-            mesh_instance_3d.set_transform(transform);
+            multi_mesh.set_instance_transform(i as i32, transform);
 
-            // Add the sphere to the scene
-            self.base_mut().add_child(Some(&mesh_instance_3d));
+            // Map the point's x, y, z coordinates to r, g, b for coloring
+            let (r, g, b) = (
+                (point.x + 1.0) / 2.0, // Map x from [-1, 1] to [0, 1]
+                (point.y + 1.0) / 2.0, // Map y from [-1, 1] to [0, 1]
+                (point.z + 1.0) / 2.0, // Map z from [-1, 1] to [0, 1]
+            );
+            let color: Color = Color::from_rgb(r, g, b);
+            multi_mesh.set_instance_color(i as i32, color);
         }
+
+        // Assign the multi mesh to the multi mesh instance for rendering
+        multi_mesh_instance.set_multimesh(Some(&multi_mesh));
+        // Add the multi mesh instance to the scene
+        self.base_mut().add_child(Some(&multi_mesh_instance));
     }
 }
